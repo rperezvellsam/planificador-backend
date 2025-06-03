@@ -12,6 +12,8 @@ app.use('/tareas', tareasRoutes);
 
 const uri = process.env.MONGO_URI;
 const port = process.env.PORT || 3000;
+const authRoutes = require('./routes/auth');
+app.use('/auth', authRoutes);
 
 mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
