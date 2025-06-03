@@ -5,7 +5,7 @@ const tareaSchema = new mongoose.Schema({
   descripcion: String,
   completada: { type: Boolean, default: false },
   fecha: Date,
-  usuario: String
+  usuariosAsignados: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Usuario' }]
 }, { timestamps: true });
 
 module.exports = mongoose.model('Tarea', tareaSchema);
