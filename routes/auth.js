@@ -84,4 +84,14 @@ router.get('/verificar', (req, res) => {
   }
 });
 
+// ✅ Nueva ruta: Obtener todos los usuarios (solo admin)
+router.get('/usuarios', verificarAdmin, async (req, res) => {
+  try {
+    const usuarios = await Usuario.find({}, 'nombre email _id');
+    res.json(usuarios);
+  } catch (err) {
+    res.status(500).json({ mensaje: 'Error al obtener usuarios' });
+  }
+});
+
 module.exports = router;
