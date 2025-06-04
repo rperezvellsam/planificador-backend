@@ -55,13 +55,13 @@ router.post('/', async (req, res) => {
 
     if (decoded.rol !== 'admin') return res.status(403).json({ error: 'Solo administradores' });
 
-    const { titulo, descripcion, fecha, usuariosAsignados } = req.body;
+    const { titulo, descripcion, fecha, zona, usuariosAsignados } = req.body;
     if (!titulo || !fecha || !usuariosAsignados) {
       console.log('❌ Campos incompletos en body:', req.body);
       return res.status(400).json({ error: 'Campos incompletos' });
     }
 
-    const tarea = new Tarea({ titulo, descripcion, fecha, usuariosAsignados });
+    const tarea = new Tarea({ titulo, descripcion, fecha, zona, usuariosAsignados });
     await tarea.save();
     res.status(201).json(tarea);
   } catch (err) {
