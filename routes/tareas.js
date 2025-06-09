@@ -73,9 +73,22 @@ router.post('/', async (req, res) => {
 // Actualizar tarea
 router.patch('/:id', async (req, res) => {
   try {
-    const tarea = await Tarea.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    const { titulo, descripcion, completada, fecha, zona, usuariosAsignados } = req.body;
+
+    const tarea = await Tarea.findById(req.params.id);
+    if (!tarea) return res.status(404).json({ error: 'Tarea no encontrada' });
+
+    if (titulo !== undefined) tarea.titulo = titulo;
+    if (descripcion !== undefined) tarea.descripcion = descripcion;
+    if (completada !== undefined) tarea.completada = completada;
+    if (fecha !== undefined) tarea.fecha = fecha;
+    if (zona !== undefined) tarea.zona = zona;
+    if (usuariosAsignados !== undefined) tarea.usuariosAsignados = usuariosAsignados;
+
+    await tarea.save();
     res.json(tarea);
   } catch (err) {
+    console.error('🔥 Error en PATCH /tareas/:id:', err.message);
     res.status(500).json({ error: 'Error al actualizar tarea' });
   }
 });
@@ -86,6 +99,7 @@ router.delete('/:id', async (req, res) => {
     await Tarea.findByIdAndDelete(req.params.id);
     res.status(204).end();
   } catch (err) {
+    console.error('🔥 Error en DELETE /tareas/:id:', err.message);
     res.status(500).json({ error: 'Error al eliminar tarea' });
   }
 });
